@@ -1,0 +1,48 @@
+server:
+  port: 4004
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service-route
+          uri: http://host.docker.internal:4001
+          predicates:
+            - path=/auth/**
+          filters:
+            - strip-prefix=1
+            - CustomLogging
+
+        - id: patient-service-route
+          uri: http://host.docker.internal:4000
+          predicates:
+            - path=/api/patients/**
+          filters:
+            - strip-prefix=1
+
+        - id: api-docs-patient-route
+          uri: http://host.docker.internal:4000
+          predicates:
+            - Path=/api-docs/patients
+          filters:
+            - RewritePath=/api-docs/patients, /v3/api-docs
+
+        - id: api-docs-auth-route
+          uri: http://host.docker.internal:4001
+          predicates:
+            - Path=/api-docs/auth
+          filters:
+            - RewritePath=/api-docs/auth, /v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+  endpoint:
+    gateway:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
