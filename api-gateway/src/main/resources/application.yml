@@ -11,6 +11,7 @@ spring:
             - path=/auth/**
           filters:
             - strip-prefix=1
+            - CustomLogging
 
         - id: patient-service-route
           uri: http://patient-service:4000
@@ -25,6 +26,13 @@ spring:
             - Path=/api-docs/patients
           filters:
             - RewritePath=/api-docs/patients, /v3/api-docs
+
+        - id: api-docs-auth-route
+          uri: http://auth-service:4001
+          predicates:
+            - Path=/api-docs/auth
+          filters:
+            - RewritePath=/api-docs/auth, /v3/api-docs
 
 management:
   endpoints:

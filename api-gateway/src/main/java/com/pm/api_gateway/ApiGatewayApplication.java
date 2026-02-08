@@ -1,7 +1,5 @@
 package com.pm.api_gateway;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -11,13 +9,11 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class ApiGatewayApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(ApiGatewayApplication.class);
+
 
     public static void main(String[] args) {
-
-        log.info("Fuck you 5000 times machikney api gateway");
         SpringApplication.run(ApiGatewayApplication.class, args);
-	}
+    }
 
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
@@ -30,5 +26,4 @@ public class ApiGatewayApplication {
                         .uri("http://patient-service:4000"))
                 .build();
     }
-
 }
