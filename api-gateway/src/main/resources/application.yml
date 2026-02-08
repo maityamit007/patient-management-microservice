@@ -5,25 +5,36 @@ spring:
   cloud:
     gateway:
       routes:
-
         - id: auth-service-route
           uri: http://auth-service:4001
           predicates:
-            - Path=/auth/**
+            - path=/auth/**
           filters:
-            - StripPrefix=1
-        #            - JwtValidation
+            - strip-prefix=1
 
         - id: patient-service-route
           uri: http://patient-service:4000
           predicates:
-            - Path=/api/patients/**
+            - path=/api/patients/**
           filters:
-            - StripPrefix=1
+            - strip-prefix=1
 
         - id: api-docs-patient-route
           uri: http://patient-service:4000
           predicates:
             - Path=/api-docs/patients
           filters:
-            - RewritePath=/api-docs/patients,/v3/api-docs
+            - RewritePath=/api-docs/patients, /v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+  endpoint:
+    gateway:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
